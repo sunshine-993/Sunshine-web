@@ -5,20 +5,20 @@
   --font-sans: "Inter", "Helvetica Neue", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Noto Sans CJK SC", "Microsoft YaHei", sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
   
-  --color-cream-50: #FDFBF7;
-  --color-cream-100: #FAF6EE;
-  --color-cream-200: #F5EFEB;
-  --color-cream-300: #EAE5D9;
+  --color-cream-50: #FCFAF6;  /* Pure clean alabaster cream */
+  --color-cream-100: #F8F5EE; /* Soft warm parchment */
+  --color-cream-200: #F2ECE5; /* Light clay sand */
+  --color-cream-300: #E5DCCE; /* Muted architectural concrete */
   
-  --color-sage-50: #F2F5F4;
-  --color-sage-100: #E3EAE7;
-  --color-sage-200: #CBD9D3;
-  --color-sage-400: #86A397;
-  --color-sage-500: #69877B;
-  --color-sage-700: #4B635A;
+  --color-sage-50: #F3F6F5;   /* Refreshing crisp mist */
+  --color-sage-100: #E4EAE7;  /* Fresh pale sage */
+  --color-sage-200: #CCD7D2;  /* Clean elegant celadon */
+  --color-sage-400: #8FAEA0;  /* Premium organic sage green */
+  --color-sage-500: #638D7C;  /* Rich spruce pine */
+  --color-sage-700: #415E51;  /* Deep silent moss */
   
-  --color-moss-800: #2C3531;
-  --color-moss-900: #1B211E;
+  --color-moss-800: #192620;  /* Absolute luxury deep pine charcoal */
+  --color-moss-900: #0D1512;  /* Ultra deep charcoal obsidian green */
 }
 
 /* Custom scrollbar to match the premium sage-cream aesthetic */
@@ -47,8 +47,8 @@ html {
 }
 
 body {
-  background-color: #FDFBF7;
-  color: #2C3531;
+  background-color: #FCFAF6;
+  color: #192620;
 }
 
 .word-break-all {

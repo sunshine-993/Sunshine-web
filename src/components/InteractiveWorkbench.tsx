@@ -358,7 +358,7 @@ export const InteractiveWorkbench: React.FC<InteractiveWorkbenchProps> = ({ lang
                 {/* Scale Selection */}
                 <div className="space-y-2">
                   <label className="text-xs text-moss-800 font-bold block">{lang === 'zh' ? '团队规模 / Organization Scale' : 'Organization Scale'}</label>
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 xl:grid-cols-2 2xl:grid-cols-3 gap-2">
                     {[
                       { id: 'small', label: '初创 (<10人)', labelEn: '< 10 members' },
                       { id: 'mid', label: '成长 (10-50人)', labelEn: '10-50 members' },
@@ -383,7 +383,7 @@ export const InteractiveWorkbench: React.FC<InteractiveWorkbenchProps> = ({ lang
                 {/* Monthly Revenue Selection */}
                 <div className="space-y-2">
                   <label className="text-xs text-moss-800 font-bold block">{lang === 'zh' ? '当前月度GMV规模 / Monthly GMV' : 'Monthly GMV'}</label>
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                  <div className="grid grid-cols-2 sm:grid-cols-4 xl:grid-cols-2 2xl:grid-cols-4 gap-2">
                     {['<10万', '10-50万', '50-200万', '200万+'].map(val => (
                       <button
                         key={val}
@@ -625,7 +625,7 @@ export const InteractiveWorkbench: React.FC<InteractiveWorkbenchProps> = ({ lang
                 </span>
 
                 {/* Track Selector */}
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 xl:grid-cols-3 2xl:grid-cols-5 gap-2">
                   {[
                     { id: 'hotel', label: '酒店 OTA', labelEn: 'Hotel OTA' },
                     { id: 'fnb', label: '餐饮 OMO', labelEn: 'F&B OMO' },
