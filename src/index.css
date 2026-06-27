@@ -1,0 +1,57 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", "Helvetica Neue", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Noto Sans CJK SC", "Microsoft YaHei", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  
+  --color-cream-50: #FDFBF7;
+  --color-cream-100: #FAF6EE;
+  --color-cream-200: #F5EFEB;
+  --color-cream-300: #EAE5D9;
+  
+  --color-sage-50: #F2F5F4;
+  --color-sage-100: #E3EAE7;
+  --color-sage-200: #CBD9D3;
+  --color-sage-400: #86A397;
+  --color-sage-500: #69877B;
+  --color-sage-700: #4B635A;
+  
+  --color-moss-800: #2C3531;
+  --color-moss-900: #1B211E;
+}
+
+/* Custom scrollbar to match the premium sage-cream aesthetic */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #FDFBF7;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #CBD9D3;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #86A397;
+}
+
+/* Base custom styles with strict line heights and word break */
+html {
+  scroll-behavior: smooth;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+}
+
+body {
+  background-color: #FDFBF7;
+  color: #2C3531;
+}
+
+.word-break-all {
+  word-break: break-word;
+}
+
