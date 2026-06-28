@@ -8,6 +8,11 @@ import { motion, AnimatePresence } from 'motion/react';
 import { BUSINESS_SECTIONS, MANIFESTO_ITEMS } from './data';
 import { CopyButton } from './components/CopyButton';
 import { InteractiveWorkbench } from './components/InteractiveWorkbench';
+import { TechBackground } from './components/TechBackground';
+import { GlowCard } from './components/GlowCard';
+import { SakuraTrail } from './components/SakuraTrail';
+import { Magnetic } from './components/Magnetic';
+import { playMicroTick, playOrganicPop, playSuccessChime } from './utils/audioEffects';
 import { 
   Globe, 
   Sun, 
@@ -33,9 +38,23 @@ export default function App() {
   const [isSidebarExpanded, setIsSidebarExpanded] = useState<boolean>(false);
   const [copiedWechat, setCopiedWechat] = useState<boolean>(false);
   const [copiedQQ, setCopiedQQ] = useState<boolean>(false);
+  const [scrollProgress, setScrollProgress] = useState<number>(0);
+
+  // Track scroll percentage
+  useEffect(() => {
+    const handleScroll = () => {
+      const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
+      if (totalScroll > 0) {
+        setScrollProgress((window.scrollY / totalScroll) * 100);
+      }
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   // Smooth scroll helper
   const scrollToSection = (id: string) => {
+    playMicroTick(1);
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -72,6 +91,7 @@ export default function App() {
   // Quick Copy Handler for footer shortcuts
   const handleQuickCopy = async (value: string, type: 'wechat' | 'qq') => {
     try {
+      playSuccessChime();
       if (navigator.clipboard && navigator.clipboard.writeText) {
         await navigator.clipboard.writeText(value);
       } else {
@@ -107,7 +127,21 @@ export default function App() {
   ];
 
   return (
-    <div className="min-h-screen bg-cream-50 text-moss-800 font-sans tracking-wide selection:bg-sage-100 selection:text-moss-900 overflow-x-hidden antialiased">
+    <div className="min-h-screen bg-gradient-to-b from-[#EFF3F1] via-[#F4F7F5] to-[#F9FAF8] text-moss-800 font-sans tracking-wide selection:bg-sage-100 selection:text-moss-900 overflow-x-hidden antialiased">
+      
+      {/* Dynamic 100% Client-Side High-Tech Particle Network Backdrop */}
+      <TechBackground />
+
+      {/* Delicate organic Sakura (Cherry Blossom) Petal Mouse Trail */}
+      <SakuraTrail />
+
+      {/* Slick Dynamic Scroll Progress Bar */}
+      <div className="fixed top-0 left-0 right-0 h-[3px] bg-sage-100 z-[9999] pointer-events-none">
+        <motion.div 
+          className="h-full bg-gradient-to-r from-sage-400 via-moss-700 to-sage-400 origin-left"
+          style={{ width: `${scrollProgress}%` }}
+        />
+      </div>
       
       {/* Decorative Warm Ambient Glow Line */}
       <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-sage-400/20 via-cream-300 to-transparent pointer-events-none" />
@@ -478,18 +512,18 @@ export default function App() {
 
             {/* Subtle organic info panels */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6">
-              <div className="border border-cream-300 p-6 rounded bg-white/30 space-y-2">
+              <GlowCard className="p-6 bg-white/40 backdrop-blur-xs" glowColor="rgba(143, 161, 145, 0.2)">
                 <span className="font-mono text-[9px] text-sage-500 tracking-wider block uppercase">/ CORE MISSION / 核心定位</span>
-                <p className="text-xs text-moss-800 leading-relaxed font-light">
+                <p className="text-xs text-moss-800 leading-relaxed font-light mt-2">
                   {lang === 'zh' ? '拒绝繁杂无用的汇报。专注通过对公域平台底层算法机制的透彻理解和中立设备选型，协助实体与酒店品牌获得确定性的流量与效能跨越。' : 'Ditch over-engineered visual theater. We focus purely on organic search weight, platform algorithm structures, and custom data sync setups to optimize profitability.'}
                 </p>
-              </div>
-              <div className="border border-cream-300 p-6 rounded bg-white/30 space-y-2">
+              </GlowCard>
+              <GlowCard className="p-6 bg-white/40 backdrop-blur-xs" glowColor="rgba(143, 161, 145, 0.2)">
                 <span className="font-mono text-[9px] text-sage-500 tracking-wider block uppercase">/ OPERATIONAL FORCE / 落地伴跑</span>
-                <p className="text-xs text-moss-800 leading-relaxed font-light">
+                <p className="text-xs text-moss-800 leading-relaxed font-light mt-2">
                   {lang === 'zh' ? '不仅仅是一纸报告，而是进驻企业管理，直接打通 7x24h 智能调价收益、社客微信裂变留存、以及 OKR 和业务提成的绑定执行。' : 'Not just a PDF deliverable. We run 24/7 OTA weight ranks, build custom CRM databases, and manage daily OKR compliance audits side-by-side with your leadership.'}
                 </p>
-              </div>
+              </GlowCard>
             </div>
 
           </section>
@@ -680,9 +714,10 @@ export default function App() {
             {/* 3-Column Minimalist White Box Grid */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {MANIFESTO_ITEMS.map((item, idx) => (
-                <div 
+                <GlowCard 
                   key={idx} 
-                  className="bg-white rounded border border-cream-300 p-6 flex flex-col justify-between hover:border-sage-400 transition-all duration-300"
+                  className="p-6 flex flex-col justify-between h-full bg-white/45 backdrop-blur-xs"
+                  glowColor="rgba(143, 161, 145, 0.16)"
                 >
                   <div className="space-y-4">
                     <span className="font-mono text-xs text-sage-500 font-bold block">
@@ -699,10 +734,10 @@ export default function App() {
                     </div>
                   </div>
 
-                  <p className="text-xs text-sage-700 leading-relaxed font-light pt-6 border-t border-cream-100 mt-6">
+                  <p className="text-xs text-sage-700 leading-relaxed font-light pt-6 border-t border-cream-200 mt-6">
                     {lang === 'zh' ? item.description : item.descriptionEn}
                   </p>
-                </div>
+                </GlowCard>
               ))}
             </div>
 
@@ -728,23 +763,27 @@ export default function App() {
 
               {/* Action Buttons */}
               <div className="flex flex-col sm:flex-row gap-4 pt-2 relative z-10">
-                <CopyButton 
-                  value="X-921993" 
-                  text={lang === 'zh' ? "即刻复制微信：X-921993" : "Copy WeChat: X-921993"} 
-                  subText={lang === 'zh' ? "获取免费金牌算法诊断" : "Get Free Performance Audit"} 
-                  type="wechat" 
-                />
-                <CopyButton 
-                  value="1160467550" 
-                  text={lang === 'zh' ? "即刻联系 QQ：1160467550" : "Copy QQ: 1160467550"} 
-                  subText={lang === 'zh' ? "避坑系统软件及硬件采购" : "Avoid hardware & software trap"} 
-                  type="qq" 
-                />
+                <Magnetic>
+                  <CopyButton 
+                    value="X-921993" 
+                    text={lang === 'zh' ? "即刻复制微信：X-921993" : "Copy WeChat: X-921993"} 
+                    subText={lang === 'zh' ? "获取免费金牌算法诊断" : "Get Free Performance Audit"} 
+                    type="wechat" 
+                  />
+                </Magnetic>
+                <Magnetic>
+                  <CopyButton 
+                    value="1160467550" 
+                    text={lang === 'zh' ? "即刻联系 QQ：1160467550" : "Copy QQ: 1160467550"} 
+                    subText={lang === 'zh' ? "避坑系统软件及硬件采购" : "Avoid hardware & software trap"} 
+                    type="qq" 
+                  />
+                </Magnetic>
               </div>
 
               {/* Decorative credit lines */}
               <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center text-[9px] font-mono text-sage-200 border-t border-sage-700 pt-6 mt-4 gap-2">
-                <span>sunshine933.993@gmail.com</span>
+                <a href="mailto:sunshine933.993@gmail.com" className="hover:text-cream-50 hover:underline transition-colors">sunshine933.993@gmail.com</a>
                 <span>Sunshine 峰-解决方案 ｜ Full-Link Digital Operations Co.</span>
               </div>
             </div>

@@ -16,6 +16,8 @@ import {
   Building,
   Target
 } from 'lucide-react';
+import { generateExpertDiagnosisFallback } from '../utils/diagnosticEngine';
+import { playMicroTick, playOrganicPop, playSuccessChime } from '../utils/audioEffects';
 
 interface InteractiveWorkbenchProps {
   lang: 'zh' | 'en';
@@ -70,10 +72,12 @@ export const InteractiveWorkbench: React.FC<InteractiveWorkbenchProps> = ({ lang
       return;
     }
 
+    playOrganicPop(1.15);
     setLoading(true);
     setLogIndex(0);
     setDiagResult('');
     
+    let finalResult = '';
     try {
       const payload = {
         industry: getIndustryName(industry),
@@ -93,22 +97,19 @@ export const InteractiveWorkbench: React.FC<InteractiveWorkbenchProps> = ({ lang
       }
 
       const data = await response.json();
-      
-      // Delay setting the result slightly so the log animation finishes beautifully
-      setTimeout(() => {
-        setDiagResult(data.result);
-        setLoading(false);
-      }, 1000);
-
+      finalResult = data.result;
     } catch (err: any) {
-      console.error(err);
-      setDiagResult(
-        lang === 'zh' 
-          ? '### ❌ 诊断请求发生错误\n\n请检查您的网络连接，或直接点击页面下方的「联系主理人微信」获取一对一真人诊断服务。' 
-          : '### ❌ Diagnosis request failed\n\nPlease check your connection, or contact our principal consultant via WeChat directly at the bottom.'
-      );
-      setLoading(false);
+      console.warn('Backend diagnosis API failed or is offline. Rolling back to client-side smart diagnostic engine:', err);
+      // Perfect Client-Side Fallback!
+      finalResult = generateExpertDiagnosisFallback(industry, scale, currentRevenue, bottleneck, lang);
     }
+
+    // Delay setting the result slightly so the log animation finishes beautifully
+    setTimeout(() => {
+      setDiagResult(finalResult);
+      setLoading(false);
+      playSuccessChime();
+    }, 1000);
   };
 
   const getIndustryName = (val: string) => {
@@ -132,6 +133,7 @@ export const InteractiveWorkbench: React.FC<InteractiveWorkbenchProps> = ({ lang
 
   const handleCopyReport = async () => {
     try {
+      playSuccessChime();
       if (navigator.clipboard && navigator.clipboard.writeText) {
         await navigator.clipboard.writeText(diagResult);
       } else {
@@ -153,6 +155,7 @@ export const InteractiveWorkbench: React.FC<InteractiveWorkbenchProps> = ({ lang
 
   // Preset bottleneck helper
   const handleApplyPreset = (text: string) => {
+    playOrganicPop(1.1);
     setBottleneck(text);
   };
 
@@ -285,7 +288,7 @@ export const InteractiveWorkbench: React.FC<InteractiveWorkbenchProps> = ({ lang
         {/* Custom Pill Selector */}
         <div className="flex bg-cream-200/50 p-1 rounded-xl border border-cream-300 self-start md:self-auto select-none">
           <button
-            onClick={() => { setActiveTab('diagnose'); setDiagResult(''); }}
+            onClick={() => { playOrganicPop(1.1); setActiveTab('diagnose'); setDiagResult(''); }}
             className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold tracking-wide transition-all cursor-pointer ${
               activeTab === 'diagnose' 
                 ? 'bg-moss-800 text-cream-50 shadow-sm' 
@@ -296,7 +299,7 @@ export const InteractiveWorkbench: React.FC<InteractiveWorkbenchProps> = ({ lang
             {lang === 'zh' ? '智能商业诊断' : 'AI Growth Audit'}
           </button>
           <button
-            onClick={() => setActiveTab('calculator')}
+            onClick={() => { playOrganicPop(0.9); setActiveTab('calculator'); }}
             className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold tracking-wide transition-all cursor-pointer ${
               activeTab === 'calculator' 
                 ? 'bg-moss-800 text-cream-50 shadow-sm' 
@@ -341,7 +344,7 @@ export const InteractiveWorkbench: React.FC<InteractiveWorkbenchProps> = ({ lang
                       <button
                         key={item.id}
                         type="button"
-                        onClick={() => setIndustry(item.id)}
+                        onClick={() => { playMicroTick(0.95); setIndustry(item.id); }}
                         className={`px-3 py-2.5 rounded-xl border text-xs text-left font-medium transition cursor-pointer flex items-center gap-2 ${
                           industry === item.id 
                             ? 'bg-sage-100/80 text-moss-900 border-sage-400 font-semibold' 
@@ -367,7 +370,7 @@ export const InteractiveWorkbench: React.FC<InteractiveWorkbenchProps> = ({ lang
                       <button
                         key={item.id}
                         type="button"
-                        onClick={() => setScale(item.id)}
+                        onClick={() => { playMicroTick(1.05); setScale(item.id); }}
                         className={`px-2 py-3 rounded-xl border text-[11px] sm:text-xs text-center font-medium transition cursor-pointer flex items-center justify-center ${
                           scale === item.id 
                             ? 'bg-sage-100/80 text-moss-900 border-sage-400 font-semibold' 
@@ -388,7 +391,7 @@ export const InteractiveWorkbench: React.FC<InteractiveWorkbenchProps> = ({ lang
                       <button
                         key={val}
                         type="button"
-                        onClick={() => setCurrentRevenue(val)}
+                        onClick={() => { playMicroTick(1.15); setCurrentRevenue(val); }}
                         className={`px-1.5 py-3 rounded-xl border text-[11px] sm:text-xs text-center font-medium transition cursor-pointer flex items-center justify-center ${
                           currentRevenue === val 
                             ? 'bg-sage-100/80 text-moss-900 border-sage-400 font-semibold' 
@@ -635,7 +638,7 @@ export const InteractiveWorkbench: React.FC<InteractiveWorkbenchProps> = ({ lang
                   ].map(item => (
                     <button
                       key={item.id}
-                      onClick={() => setCalcTrack(item.id)}
+                      onClick={() => { playOrganicPop(1.1); setCalcTrack(item.id); }}
                       className={`px-2 py-3 rounded-xl border text-[10px] sm:text-[11px] md:text-xs text-center font-bold transition duration-300 cursor-pointer flex items-center justify-center ${
                         calcTrack === item.id 
                           ? 'bg-sage-100 text-moss-900 border-sage-400' 
@@ -663,7 +666,7 @@ export const InteractiveWorkbench: React.FC<InteractiveWorkbenchProps> = ({ lang
                     max={1000000}
                     step={10000}
                     value={monthlyRev}
-                    onChange={(e) => setMonthlyRev(Number(e.target.value))}
+                    onChange={(e) => { playMicroTick(1.0); setMonthlyRev(Number(e.target.value)); }}
                     className="w-full accent-sage-500 h-1 bg-cream-200 rounded-lg cursor-pointer"
                   />
                   <div className="flex justify-between text-[9px] text-sage-400 font-mono select-none">
@@ -687,7 +690,7 @@ export const InteractiveWorkbench: React.FC<InteractiveWorkbenchProps> = ({ lang
                     max={1000}
                     step={10}
                     value={ticketValue}
-                    onChange={(e) => setTicketValue(Number(e.target.value))}
+                    onChange={(e) => { playMicroTick(1.15); setTicketValue(Number(e.target.value)); }}
                     className="w-full accent-sage-500 h-1 bg-cream-200 rounded-lg cursor-pointer"
                   />
                   <div className="flex justify-between text-[9px] text-sage-400 font-mono select-none">
